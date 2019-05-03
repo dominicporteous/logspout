@@ -104,7 +104,7 @@ func NewSyslogAdapter(route *router.Route) (router.LogAdapter, error) {
   			return "null"
   		}
   		return string(bytes)
-  	}
+  	},
   }
 
 	var tmplStr string
