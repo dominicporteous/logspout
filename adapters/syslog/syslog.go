@@ -96,6 +96,17 @@ func NewSyslogAdapter(route *router.Route) (router.LogAdapter, error) {
 		structuredData = fmt.Sprintf("[%s]", structuredData)
 	}
 
+  var funcs = template.FuncMap{
+  	"toJSON": func(value interface{}) string {
+  		bytes, err := json.Marshal(value)
+  		if err != nil {
+  			log.Println("error marshalling to JSON: ", err)
+  			return "null"
+  		}
+  		return string(bytes)
+  	}
+  }
+
 	var tmplStr string
 	switch format {
 	case "rfc5424":
@@ -107,7 +118,7 @@ func NewSyslogAdapter(route *router.Route) (router.LogAdapter, error) {
 	default:
 		return nil, errors.New("unsupported syslog format: " + format)
 	}
-	tmpl, err := template.New("syslog").Parse(tmplStr)
+	tmpl, err := template.New("syslog").Funcs(funcs).Parse(tmplStr)
 	if err != nil {
 		return nil, err
 	}
