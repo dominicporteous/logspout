@@ -9,7 +9,7 @@ import (
 
 const (
 	// make configurable?
-	writeBuffer = 1024 * 1024
+	writeBuffer = 1024 * 5120
 )
 
 func init() {
